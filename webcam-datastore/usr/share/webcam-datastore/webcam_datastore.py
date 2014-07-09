@@ -160,7 +160,27 @@ def on_mouse(event, x, y, flag, param):
                 binary_data = xmlrpclib.Binary(handle.read())
             handle.close()
             if server.put_file(USERNAME, PASSWORD, datastore_space, nia + '.jpg', binary_data):
-		info_dialog("Foto de " + nia + " grabada correctamente")
+		#put in database
+		try:
+			# connect
+			db = MySQLdb.connect(host=dbhost, user=dbuser, passwd=dbpass, db=dbname)
+			cur = db.cursor()
+			try:
+				if NOT_IN_ADMITACA:
+					cur.execute("INSERT INTO admitaca(foto_guardada, dni, NIA) VALUES ('%s', '%s', '%s');" % (1, nia, realnia))
+				else:
+					cur.execute("UPDATE admitaca SET foto_guardada=1 WHERE dni='%s';" % (nia))
+				db.commit()
+
+			except:
+				# Rollback in case there is any error
+				db.rollback()
+
+			cur.close()
+			db.close()
+			info_dialog("Foto de " + nia + " grabada correctamente")
+		except:
+			error_dialog("Error grabando foto")
             else:
 		error_dialog("Error grabando foto")
 
@@ -210,6 +230,7 @@ if __name__ == '__main__':
 	webcam = -1
 	conf_file = '/etc/carnet-o-matic/carnet-o-matic.conf'
 	real_nia = ''
+	NOT_IN_ADMITACA = True
 
 	(USERNAME, PASSWORD) = get_credentials()
 	if not USERNAME or not PASSWORD:
@@ -297,10 +318,12 @@ if __name__ == '__main__':
 			cur.close()
 			db.close()
 			info_dialog(first_row[0]+'\nDNI: '+nia+'\nNIA: '+first_row[1])
+			NOT_IN_ADMITACA = False
 		except:
-			real_nia=get_text(None, nia+' no encontrado\nIntroduzca el NIA para seguir:')
+			real_nia=get_text(None, nia+' no encontrado\n\nIntroduzca el NIA para seguir:')
 			if not real_nia:
 				continue
+			NOT_IN_ADMITACA = True
 
 	
         	capture = cv.CaptureFromCAM(webcam)
