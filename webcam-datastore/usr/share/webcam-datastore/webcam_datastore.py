@@ -296,7 +296,7 @@ if __name__ == '__main__':
 			first_row =(cur.fetchall())[0]
 			cur.close()
 			db.close()
-			info_dialog(first_row[0]+'\nDNI: '+nia+'\nNIA: '+first_row[1]
+			info_dialog(first_row[0]+'\nDNI: '+nia+'\nNIA: '+first_row[1])
 		except:
 			real_nia=get_text(None, nia+' no encontrado\nIntroduzca el NIA para seguir:')
 			if not real_nia:
