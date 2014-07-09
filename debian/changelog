@@ -1,3 +1,9 @@
+carnet-o-matic (0.2) precise; urgency=low
+
+  * Added datbase management
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Wed, 09 Jul 2014 09:03:07 +0200
+
 carnet-o-matic (0.1) precise; urgency=low
 
   * Initial release.
