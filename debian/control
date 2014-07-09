@@ -1,0 +1,13 @@
+Source:  carnet-o-matic
+Section: admin
+Priority: optional
+Maintainer: Luis Antonio Garcia Gisbert <luisgg@gmail.com>
+Build-Depends: debhelper (>= 7.0)
+Standards-Version: 3.8.4
+
+Package: webcam-datastore
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}, python (>= 2.7), python-ldap, python-mysqldb
+Description: datastore enabled webcam photo capture program
+ The program uses any simple webcam to capture photos. Images are then
+ uploaded to a centralized datastore-server for future use.

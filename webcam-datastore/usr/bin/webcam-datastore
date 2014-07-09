@@ -1,0 +1,10 @@
+#!/bin/sh
+
+rc=0
+
+APP_DIR="$HOME/webcam-datastore"
+mkdir -p "$APP_DIR"
+cd "$APP_DIR"
+/usr/share/webcam-datastore/webcam_datastore.py -s https://fsserver:3499 || rc=$?
+
+exit $rc
