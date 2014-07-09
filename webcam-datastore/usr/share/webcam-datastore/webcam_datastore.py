@@ -168,7 +168,7 @@ def on_mouse(event, x, y, flag, param):
             draw_card(nia)
 
         elif(event == cv.CV_EVENT_RBUTTONDOWN):
-           cv.DestroyWindow(nia+':crop' + str(param)) 
+           cv.DestroyWindow('crop' + str(param)) 
             
 def clear_tmpfiles():
     filelist = glob.glob(imagefile + "*.jpg")
@@ -209,6 +209,7 @@ if __name__ == '__main__':
 
 	webcam = -1
 	conf_file = '/etc/carnet-o-matic/carnet-o-matic.conf'
+	real_nia = ''
 
 	(USERNAME, PASSWORD) = get_credentials()
 	if not USERNAME or not PASSWORD:
@@ -286,13 +287,28 @@ if __name__ == '__main__':
 
 			nia = prenia + nia
 				
-		
+		#search in database
+		try:
+			# connect
+			db = MySQLdb.connect(host=dbhost, user=dbuser, passwd=dbpass, db=dbname)
+			cur = db.cursor()
+			cur.execute("SELECT nombre_comp, NIA FROM admitaca WHERE dni='%s';" % (nia))
+			first_row =(cur.fetchall())[0]
+			cur.close()
+			db.close()
+			info_dialog(first_row[0]+'\nDNI: '+nia+'\nNIA: '+first_row[1]
+		except:
+			real_nia=get_text(None, nia+' no encontrado\nIntroduzca el NIA para seguir:')
+			if not real_nia:
+				continue
+
+	
         	capture = cv.CaptureFromCAM(webcam)
 	  #      cv.SetCaptureProperty(capture,cv.CV_CAP_PROP_FRAME_WIDTH,1280)
 	  #      cv.SetCaptureProperty(capture,cv.CV_CAP_PROP_FRAME_HEIGHT, 960);
 
-        	cv.NamedWindow('Webcam')
-        	cv.MoveWindow('Webcam', xcam, ycam)
+        	cv.NamedWindow(nia)
+        	cv.MoveWindow(nia, xcam, ycam)
         	storage = cv.CreateMemStorage()
         	cascade = cv.Load('/usr/share/webcam-datastore/haarcascade_frontalface_alt.xml')
         	faces = []
@@ -313,7 +329,7 @@ if __name__ == '__main__':
 			for (x,y,w,h) in faces:
 				cv.Rectangle(frame, (x-1,y-1), (x+w+2,y+h+2), 255)
 
-			cv.ShowImage('Webcam', frame)
+			cv.ShowImage(nia, frame)
 			i += 1
 			c = cv.WaitKey(10) % 256
         
@@ -364,10 +380,10 @@ if __name__ == '__main__':
 #                    if  nface >= numrows:
 #                        cv.DestroyWindow("crop" +str(nface-maxcropwindows*(numrows-1)))
 
-					cv.ShowImage(nia+':crop' + str(nface),frame[y:y+h, x:x+w])
+					cv.ShowImage('crop' + str(nface),frame[y:y+h, x:x+w])
 					cv.SaveImage( imagefile + str(nface) + '.jpg', frame[y:y+h, x:x+w])
-					cv.SetMouseCallback(nia+":crop" + str(nface),on_mouse, param=nface)
-					cv.MoveWindow(nia+":crop" + str(nface), xcropnext, ycrop)
+					cv.SetMouseCallback("crop" + str(nface),on_mouse, param=nface)
+					cv.MoveWindow("crop" + str(nface), xcropnext, ycrop)
 					xcropnext = xcropnext + w + 4
 					nface += 1
 			#else:
