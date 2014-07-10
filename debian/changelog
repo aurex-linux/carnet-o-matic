@@ -1,3 +1,11 @@
+carnet-o-matic (0.3) precise; urgency=low
+
+  * Fixed database char encoding bug.
+  * Set minimal height and width for photo capture. The selection rectangle color in capture
+    window changes from green to red to provide continuous feedback about the current size.
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Thu, 10 Jul 2014 17:55:27 +0200
+
 carnet-o-matic (0.2) precise; urgency=low
 
   * Added datbase management

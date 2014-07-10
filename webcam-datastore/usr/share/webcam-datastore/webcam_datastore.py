@@ -216,6 +216,9 @@ if __name__ == '__main__':
         xoffset = xoffset0
         yoffset = yoffset0
 
+	face_min_width = 200
+	face_min_height = 300
+
 	USERNAME = ''
 	PASSWORD = ''
 	server = None
@@ -317,7 +320,7 @@ if __name__ == '__main__':
 			first_row =(cur.fetchall())[0]
 			cur.close()
 			db.close()
-			info_dialog(first_row[0]+'\nDNI: '+nia+'\nNIA: '+first_row[1])
+			info_dialog(first_row[0].decode('ISO-8859-1')+'\nDNI: '+nia+'\nNIA: '+first_row[1])
 			NOT_IN_ADMITACA = False
 		except:
 			real_nia=get_text(None, nia+' no encontrado\n\nIntroduzca el NIA para seguir:')
@@ -349,8 +352,14 @@ if __name__ == '__main__':
 			if i%5==0:
 				faces = detect_faces(frame)
 
+			face_size_correct = True
 			for (x,y,w,h) in faces:
-				cv.Rectangle(frame, (x-1,y-1), (x+w+2,y+h+2), 255)
+				rcolor = (0, 255, 0)
+				if (w < face_min_width) or (h < face_min_height):
+					face_size_correct = False
+					rcolor = (0, 0, 255)
+
+				cv.Rectangle(frame, (x-1,y-1), (x+w+2,y+h+2), rcolor)
 
 			cv.ShowImage(nia, frame)
 			i += 1
@@ -383,13 +392,13 @@ if __name__ == '__main__':
 			elif c == 45 or c == 173:
 				# - pressed
 				fzoom -= 0.1
-			elif c == 10 or c == 141:
+			elif ( c == 10 or c == 141 ) and face_size_correct:
 				# ENTER pressed. Store image to disk
 				#imagefile=datetime.now().strftime('%Y%m%d_%Hh%Mm%Ss%f') + '.jpg'
 				#cv.SaveImage(imagefile, frame)
 				#image = Image.open(imagefile)
 				#image.show()
-		
+					
 				for (x,y,w,h) in faces:
 					#cropfile = imagefile + str(nface) + '.jpg'
 					#cv.SaveImage(cropfile, frame[y:y+h, x:x+w])
