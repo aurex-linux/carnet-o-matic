@@ -218,6 +218,8 @@ if __name__ == '__main__':
 
 	face_min_width = 200
 	face_min_height = 300
+	face_min_x = 0
+	face_min_y = 0
 
 	USERNAME = ''
 	PASSWORD = ''
@@ -337,6 +339,11 @@ if __name__ == '__main__':
         	cv.MoveWindow(nia, xcam, ycam)
         	storage = cv.CreateMemStorage()
         	cascade = cv.Load('/usr/share/webcam-datastore/haarcascade_frontalface_alt.xml')
+
+		# get current limits
+		face_max_x = int(cv.GetCaptureProperty(capture,cv.CV_CAP_PROP_FRAME_WIDTH))
+		face_max_y = int(cv.GetCaptureProperty(capture,cv.CV_CAP_PROP_FRAME_HEIGHT))
+
         	faces = []
 
         	i=0
@@ -355,7 +362,7 @@ if __name__ == '__main__':
 			face_size_correct = True
 			for (x,y,w,h) in faces:
 				rcolor = (0, 255, 0)
-				if (w < face_min_width) or (h < face_min_height):
+				if (w < face_min_width) or (h < face_min_height) or (y < face_min_y) or (y+h > face_max_y) or (x < face_min_x) or (x+w > face_max_x):
 					face_size_correct = False
 					rcolor = (0, 0, 255)
 

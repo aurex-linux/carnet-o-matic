@@ -1,8 +1,15 @@
+carnet-o-matic (0.4) precise; urgency=low
+
+  * Added detection of 'out of bounds photo' to set capture function in 'red state'
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Thu, 10 Jul 2014 19:44:16 +0200
+
 carnet-o-matic (0.3) precise; urgency=low
 
   * Fixed database char encoding bug.
   * Set minimal height and width for photo capture. The selection rectangle color in capture
-    window changes from green to red to provide continuous feedback about the current size.
+    window changes from green to red to provide continuous feedback about the current size, and
+    capture function is disabled in 'red state'
 
  -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Thu, 10 Jul 2014 17:55:27 +0200
 
