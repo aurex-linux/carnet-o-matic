@@ -47,6 +47,7 @@ class UserDialog(gtk.Window):
         self.passentry.set_visibility(False)
         
         self.runbutton = gtk.Button("Conectar")
+	self.runbutton.set_flags(gtk.CAN_DEFAULT)
         self.exitbutton = gtk.Button("Salir")
 
         self.exitbutton.connect("clicked", self.close, "Exit")
@@ -65,6 +66,7 @@ class UserDialog(gtk.Window):
         win.put(self.exitbutton, 50, 110)
                         
         self.add(win)
+	self.runbutton.grab_default()
         
         self.connect("destroy", gtk.main_quit)
         self.show_all()
@@ -84,4 +86,14 @@ def info_dialog(txt):
 	md = gtk.MessageDialog(None, gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_INFO, gtk.BUTTONS_CLOSE, txt)
 	md.run()
 	md.destroy()
+
+def yesno_dialog(txt):
+	md = gtk.MessageDialog(None, gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, txt)
+	r=md.run()
+	md.destroy()
+	if r == gtk.RESPONSE_YES: 
+		return True
+	else:
+		return False
+
 # ===============

@@ -167,7 +167,7 @@ def on_mouse(event, x, y, flag, param):
 			cur = db.cursor()
 			try:
 				if NOT_IN_ADMITACA:
-					cur.execute("INSERT INTO admitaca(foto_guardada, dni, NIA) VALUES ('%s', '%s', '%s');" % (1, nia, realnia))
+					cur.execute("INSERT INTO admitaca(foto_guardada, dni, nombre_comp) VALUES ('%s', '%s', '%s');" % ('1', nia, new_apenom))
 				else:
 					cur.execute("UPDATE admitaca SET foto_guardada=1 WHERE dni='%s';" % (nia))
 				db.commit()
@@ -216,8 +216,8 @@ if __name__ == '__main__':
         xoffset = xoffset0
         yoffset = yoffset0
 
-	face_min_width = 200
-	face_min_height = 300
+	#face_min_width = 200
+	face_min_height = 260
 	face_min_x = 0
 	face_min_y = 0
 
@@ -234,8 +234,9 @@ if __name__ == '__main__':
 
 	webcam = -1
 	conf_file = '/etc/carnet-o-matic/carnet-o-matic.conf'
-	real_nia = ''
+	new_apenom = ''
 	NOT_IN_ADMITACA = True
+	def_nia = ''
 
 	(USERNAME, PASSWORD) = get_credentials()
 	if not USERNAME or not PASSWORD:
@@ -295,7 +296,8 @@ if __name__ == '__main__':
 		usage('Error accessing database')
 		sys.exit()
 	while True:
-        	nia = get_text(None, 'Introduzca el NIF/NIE:')
+        	nia = get_text(None, 'Introduzca el NIF/NIE:', def_nia)
+		def_nia = ''
 		if not nia:
             		quit()
 
@@ -325,9 +327,12 @@ if __name__ == '__main__':
 			info_dialog(first_row[0].decode('ISO-8859-1')+'\nDNI: '+nia+'\nNIA: '+first_row[1])
 			NOT_IN_ADMITACA = False
 		except:
-			real_nia=get_text(None, nia+' no encontrado\n\nIntroduzca el NIA para seguir:')
-			if not real_nia:
+			new_apenom=get_text(None, nia+' no encontrado\n\nSi desea darlo de alta debe introducir apellidos, nombre del alumno para seguir:')
+			if not new_apenom:
+				def_nia = nia
 				continue
+			new_apenom = new_apenom.upper()
+			new_apenom = new_apenom.strip()
 			NOT_IN_ADMITACA = True
 
 	
@@ -362,7 +367,7 @@ if __name__ == '__main__':
 			face_size_correct = True
 			for (x,y,w,h) in faces:
 				rcolor = (0, 255, 0)
-				if (w < face_min_width) or (h < face_min_height) or (y < face_min_y) or (y+h > face_max_y) or (x < face_min_x) or (x+w > face_max_x):
+				if (h < face_min_height) or (y < face_min_y) or (y+h > face_max_y) or (x < face_min_x) or (x+w > face_max_x):
 					face_size_correct = False
 					rcolor = (0, 0, 255)
 

@@ -12,10 +12,10 @@ Description: datastore enabled webcam photo capture program
  The program uses any simple webcam to capture photos. Images are then
  uploaded to a centralized datastore-server for future use.
 
-Package: ausias-webcam-datastore
-Architecture: all
-Depends: ${misc:Depends}, webcam-datastore
-Description: CIPFP Ausias March specific package for webcam-datastore
- The package installs and configures webcam-datastore with specific
- configuration for CIPFP Ausias March intranet
+#Package: ausias-webcam-datastore
+#Architecture: all
+#Depends: ${misc:Depends}, webcam-datastore
+#Description: CIPFP Ausias March specific package for webcam-datastore
+# The package installs and configures webcam-datastore with specific
+# configuration for CIPFP Ausias March intranet
 
