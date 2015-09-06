@@ -1,3 +1,9 @@
+carnet-o-matic (0.5) trusty; urgency=medium
+
+  * Rebuild for aurex 14.04 trusty
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Mon, 07 Sep 2015 01:41:38 +0200
+
 carnet-o-matic (0.4) precise; urgency=low
 
   * Added detection of 'out of bounds photo' to set capture function in 'red state'
