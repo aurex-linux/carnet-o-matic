@@ -1,3 +1,9 @@
+carnet-o-matic (0.6) trusty; urgency=medium
+
+  * Dummy upgrade
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Tue, 08 Sep 2015 10:50:35 +0200
+
 carnet-o-matic (0.5) trusty; urgency=medium
 
   * Rebuild for aurex 14.04 trusty
