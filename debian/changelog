@@ -1,3 +1,9 @@
+carnet-o-matic (0.7) trusty; urgency=medium
+
+  * webcam-datastore: use 'alumnos' table instead of admitaca
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Thu, 10 Sep 2015 16:58:42 +0200
+
 carnet-o-matic (0.6) trusty; urgency=medium
 
   * Dummy upgrade

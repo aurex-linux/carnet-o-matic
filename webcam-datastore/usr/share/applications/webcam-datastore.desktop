@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=webcam-datastore
+Comment=Take photos for student id
+Keywords=photo;video;webcam;
+Exec=webcam-datastore
+Terminal=false
+Type=Application
+StartupNotify=true
+Icon=/usr/share/webcam-datastore/webcam-datastore.png
+Categories=GNOME;AudioVideo;Video;Recorder;
