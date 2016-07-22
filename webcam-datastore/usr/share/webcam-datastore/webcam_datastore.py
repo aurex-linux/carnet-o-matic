@@ -20,7 +20,7 @@ import xmlrpclib
 import MySQLdb
 import getopt
 
-from webcam_dialogs import get_credentials, error_dialog, info_dialog
+from webcam_dialogs import get_credentials, error_dialog, info_dialog, get_student
 
 def usage(param=''):
 	if param:
@@ -329,7 +329,9 @@ if __name__ == '__main__':
 			info_dialog(first_row[0].decode('ISO-8859-1')+'\nDNI: '+nia+'\nNIA: '+first_row[1])
 			NOT_IN_ADMITACA = False
 		except:
-			new_apenom=get_text(None, nia+' no encontrado\n\nSi desea darlo de alta debe introducir apellidos, nombre del alumno para seguir:')
+			#new_apenom=get_text(None, nia+' no encontrado\n\nSi desea darlo de alta debe introducir apellidos, nombre del alumno para seguir:')
+			(new_apenom, new_email) = get_student(nia+' no encontrado')
+			
 			if not new_apenom:
 				def_nia = nia
 				continue

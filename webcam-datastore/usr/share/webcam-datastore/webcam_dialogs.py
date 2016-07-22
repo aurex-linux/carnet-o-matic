@@ -9,6 +9,10 @@ import sys
 USERNAME = ''
 PASSWORD = ''
 
+STUDENTFULLNAME = ''
+STUDENTEMAIL = ''
+
+
 # ================
 
 
@@ -66,7 +70,6 @@ class UserDialog(gtk.Window):
         win.put(self.exitbutton, 50, 110)
                         
         self.add(win)
-	self.runbutton.grab_default()
         
         self.connect("destroy", gtk.main_quit)
         self.show_all()
@@ -95,5 +98,73 @@ def yesno_dialog(txt):
 		return True
 	else:
 		return False
+
+# ===============
+
+class StudentDialog(gtk.Window):
+
+    def close(self,widget,event,data = None):
+        self.hide()
+        gtk.main_quit()
+        return gtk.FALSE
+
+    def prep(self,widget,option):
+        print widget, option
+	global STUDENTFULLNAME
+	global STUDENTEMAIL
+
+        STUDENTFULLNAME = self.fullnameentry.get_text()
+        STUDENTEMAIL = self.emailentry.get_text()
+        self.hide()
+        gtk.main_quit()
+#        return gtk.FALSE
+ 
+    def __init__(self, txt):
+        super(StudentDialog, self).__init__()
+
+        self.set_title(txt)
+        self.set_size_request(600, 160)
+        self.set_position(gtk.WIN_POS_CENTER)
+        
+        win = gtk.Fixed()
+
+        self.fullnamelabel = gtk.Label("Apellidos, Nombre:")
+        self.fullnameentry = gtk.Entry()
+	self.fullnameentry.set_width_chars(60)
+        
+        self.emaillabel = gtk.Label("email:")
+        self.emailentry = gtk.Entry()
+        self.emailentry.set_width_chars(40)
+        
+        self.runbutton = gtk.Button("Guardar")
+	self.runbutton.set_flags(gtk.CAN_DEFAULT)
+        self.exitbutton = gtk.Button("Cancelar")
+
+        self.exitbutton.connect("clicked", self.close, "Exit")
+        self.runbutton.connect("clicked", self.prep, "Run")
+
+        #win.put(self.urllabel, 50, 30)
+        #win.put(self.urlentry, 150, 25)
+        
+        win.put(self.fullnamelabel, 20, 30)
+        win.put(self.fullnameentry, 140, 25)
+        
+        win.put(self.emaillabel, 20, 70)
+        win.put(self.emailentry, 140, 65)
+        
+        win.put(self.runbutton, 340, 110)
+        win.put(self.exitbutton, 140, 110)
+
+        self.add(win)
+	self.runbutton.grab_default()
+        
+        self.connect("destroy", gtk.main_quit)
+        self.show_all()
+
+
+def get_student(txt):
+	StudentDialog(txt)
+	gtk.main()
+	return (STUDENTFULLNAME, STUDENTEMAIL)
 
 # ===============
