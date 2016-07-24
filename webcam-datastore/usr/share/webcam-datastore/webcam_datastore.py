@@ -168,10 +168,11 @@ def on_mouse(event, x, y, flag, param):
 			try:
 				if NOT_IN_ADMITACA:
 					#cur.execute("INSERT INTO admitaca(foto_guardada, dni, nombre_comp) VALUES ('%s', '%s', '%s');" % ('1', nia, new_apenom))
-					cur.execute("INSERT INTO excepciones_fotos(foto, DNI_NORM, nombre_comp, fecha_foto) VALUES ('%s', '%s', '%s', '%s');" % (nia+".jpg", nia, new_apenom, datetime.now().strftime('%Y%m%d')))
-				else:
-					cur.execute("UPDATE alumnos SET foto='%s' WHERE DNI_NORM='%s';" % (nia+".jpg", nia))
-				db.commit()
+					cur.execute("INSERT INTO excepciones_fotos(foto, DNI_NORM, nombre_comp, fecha_foto, email) VALUES ('%s', '%s', '%s', '%s');" % (nia+".jpg", nia, new_apenom, datetime.now().strftime('%Y%m%d')), new_email)
+				#else:
+				#	#cur.execute("UPDATE alumnos SET foto='%s' WHERE DNI_NORM='%s';" % (nia+".jpg", nia))
+				#	cur.execute("UPDATE alumnos SET foto='%s' WHERE dni='%s';" % (nia+".jpg", nia))
+					db.commit()
 
 			except:
 				# Rollback in case there is any error
@@ -236,6 +237,7 @@ if __name__ == '__main__':
 	webcam = -1
 	conf_file = '/etc/carnet-o-matic/carnet-o-matic.conf'
 	new_apenom = ''
+	new_email = ''
 	NOT_IN_ADMITACA = True
 	def_nia = ''
 
@@ -321,12 +323,13 @@ if __name__ == '__main__':
 			# connect
 			db = MySQLdb.connect(host=dbhost, user=dbuser, passwd=dbpass, db=dbname)
 			cur = db.cursor()
-			#cur.execute("SELECT nombre_comp, NIA FROM admitaca WHERE dni='%s';" % (nia))
-			cur.execute("SELECT nombre_comp, NIA FROM alumnos WHERE DNI_NORM='%s';" % (nia))
+			cur.execute("SELECT nombre_comp, NIA FROM admitaca WHERE dni='%s';" % (nia))
+			#cur.execute("SELECT nombre_comp, NIA FROM alumnos WHERE DNI_NORM='%s';" % (nia))
 			first_row =(cur.fetchall())[0]
 			cur.close()
 			db.close()
-			info_dialog(first_row[0].decode('ISO-8859-1')+'\nDNI: '+nia+'\nNIA: '+first_row[1])
+			#info_dialog(first_row[0].decode('ISO-8859-1')+'\nDNI: '+nia+'\nNIA: '+first_row[1])
+			info_dialog(first_row[0]+'\nDNI: '+nia+'\nNIA: '+first_row[1])
 			NOT_IN_ADMITACA = False
 		except:
 			#new_apenom=get_text(None, nia+' no encontrado\n\nSi desea darlo de alta debe introducir apellidos, nombre del alumno para seguir:')
@@ -432,7 +435,8 @@ if __name__ == '__main__':
 					cv.SaveImage( imagefile + str(nface) + '.jpg', frame[y:y+h, x:x+w])
 					cv.SetMouseCallback("crop" + str(nface),on_mouse, param=nface)
 					cv.MoveWindow("crop" + str(nface), xcropnext, ycrop)
-					xcropnext = xcropnext + w + 4
+					#xcropnext = xcropnext + w + 4
+					xcropnext = xcropnext + 50
 					nface += 1
 			#else:
 	                #print str(c)

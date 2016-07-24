@@ -1,3 +1,9 @@
+carnet-o-matic (0.8) trusty; urgency=medium
+
+  * Added email field management
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Mon, 25 Jul 2016 01:35:38 +0200
+
 carnet-o-matic (0.7) trusty; urgency=medium
 
   * webcam-datastore: use 'alumnos' table instead of admitaca
