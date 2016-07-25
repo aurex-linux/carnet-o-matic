@@ -168,11 +168,13 @@ def on_mouse(event, x, y, flag, param):
 			try:
 				if NOT_IN_ADMITACA:
 					#cur.execute("INSERT INTO admitaca(foto_guardada, dni, nombre_comp) VALUES ('%s', '%s', '%s');" % ('1', nia, new_apenom))
-					cur.execute("INSERT INTO excepciones_fotos(foto, DNI_NORM, nombre_comp, fecha_foto, email) VALUES ('%s', '%s', '%s', '%s');" % (nia+".jpg", nia, new_apenom, datetime.now().strftime('%Y%m%d')), new_email)
-				#else:
+					info_dialog(nia+".jpg - "+nia+" - "+new_apenom+ " - "+datetime.now().strftime('%Y%m%d')+ " - "+new_email)
+
+					cur.execute("INSERT INTO excepciones_fotos(foto, DNI_NORM, nombre_comp, fecha_foto, email) VALUES ('%s', '%s', '%s', '%s', '%s');" % (nia+".jpg", nia, new_apenom, datetime.now().strftime('%Y%m%d'), new_email))
+				else:
 				#	#cur.execute("UPDATE alumnos SET foto='%s' WHERE DNI_NORM='%s';" % (nia+".jpg", nia))
-				#	cur.execute("UPDATE alumnos SET foto='%s' WHERE dni='%s';" % (nia+".jpg", nia))
-					db.commit()
+					cur.execute("UPDATE admitaca SET email='%s' WHERE dni='%s';" % (new_email, nia))
+				db.commit()
 
 			except:
 				# Rollback in case there is any error
@@ -329,7 +331,9 @@ if __name__ == '__main__':
 			cur.close()
 			db.close()
 			#info_dialog(first_row[0].decode('ISO-8859-1')+'\nDNI: '+nia+'\nNIA: '+first_row[1])
-			info_dialog(first_row[0]+'\nDNI: '+nia+'\nNIA: '+first_row[1])
+			#info_dialog(first_row[0]+'\nDNI: '+nia+'\nNIA: '+first_row[1])
+			new_email = get_text(None, first_row[0]+'\nDNI: '+nia+'\nNIA: '+first_row[1]+'\n Introduzca email:')
+
 			NOT_IN_ADMITACA = False
 		except:
 			#new_apenom=get_text(None, nia+' no encontrado\n\nSi desea darlo de alta debe introducir apellidos, nombre del alumno para seguir:')
@@ -361,6 +365,7 @@ if __name__ == '__main__':
         	i=0
 	        numrows = 1
         	xcropnext=xcrop 
+        	nface=0
         	imagefile=datetime.now().strftime('%Y%m%d_%Hh%Mm%Ss%f') + '-'
         	runCapture = True
 
@@ -436,7 +441,7 @@ if __name__ == '__main__':
 					cv.SetMouseCallback("crop" + str(nface),on_mouse, param=nface)
 					cv.MoveWindow("crop" + str(nface), xcropnext, ycrop)
 					#xcropnext = xcropnext + w + 4
-					xcropnext = xcropnext + 50
+					xcropnext = xcropnext + 100
 					nface += 1
 			#else:
 	                #print str(c)
