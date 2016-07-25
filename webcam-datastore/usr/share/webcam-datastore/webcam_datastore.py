@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#! /usr/bin/python
 # -*- coding: utf-8 -*-
 
 import cv
@@ -168,7 +168,7 @@ def on_mouse(event, x, y, flag, param):
 			try:
 				if NOT_IN_ADMITACA:
 					#cur.execute("INSERT INTO admitaca(foto_guardada, dni, nombre_comp) VALUES ('%s', '%s', '%s');" % ('1', nia, new_apenom))
-					info_dialog(nia+".jpg - "+nia+" - "+new_apenom+ " - "+datetime.now().strftime('%Y%m%d')+ " - "+new_email)
+					#info_dialog(nia+".jpg - "+nia+" - "+new_apenom+ " - "+datetime.now().strftime('%Y%m%d')+ " - "+new_email)
 
 					cur.execute("INSERT INTO excepciones_fotos(foto, DNI_NORM, nombre_comp, fecha_foto, email) VALUES ('%s', '%s', '%s', '%s', '%s');" % (nia+".jpg", nia, new_apenom, datetime.now().strftime('%Y%m%d'), new_email))
 				else:
@@ -323,7 +323,7 @@ if __name__ == '__main__':
 		#search in database
 		try:
 			# connect
-			db = MySQLdb.connect(host=dbhost, user=dbuser, passwd=dbpass, db=dbname)
+			db = MySQLdb.connect(host=dbhost, user=dbuser, passwd=dbpass, db=dbname, charset="utf8")
 			cur = db.cursor()
 			cur.execute("SELECT nombre_comp, NIA FROM admitaca WHERE dni='%s';" % (nia))
 			#cur.execute("SELECT nombre_comp, NIA FROM alumnos WHERE DNI_NORM='%s';" % (nia))
@@ -332,7 +332,7 @@ if __name__ == '__main__':
 			db.close()
 			#info_dialog(first_row[0].decode('ISO-8859-1')+'\nDNI: '+nia+'\nNIA: '+first_row[1])
 			#info_dialog(first_row[0]+'\nDNI: '+nia+'\nNIA: '+first_row[1])
-			new_email = get_text(None, first_row[0]+'\nDNI: '+nia+'\nNIA: '+first_row[1]+'\n Introduzca email:')
+			new_email = get_text(None, first_row[0].decode('utf-8')+'\nDNI: '+nia+'\nNIA: '+first_row[1]+'\n Introduzca email:')
 
 			NOT_IN_ADMITACA = False
 		except:
