@@ -11,7 +11,7 @@ PASSWORD = ''
 
 STUDENTFULLNAME = ''
 STUDENTEMAIL = ''
-STUDENTTYPE = 'ALUMNO'
+LASTTYPE='ALUMNO'
 
 # ================
 
@@ -116,8 +116,10 @@ class StudentDialog(gtk.Window):
 
         STUDENTFULLNAME = self.fullnameentry.get_text()
         STUDENTEMAIL = self.emailentry.get_text()
-	STUDENTTYPE = ("ALUMNO", "PROFESOR")[self.studentbutton.get_active()]
-	LASTTYPE = STUDENTTYPE
+	for r in self.studentbutton.get_group():
+		if r.get_active():
+			STUDENTTYPE = r.get_label()
+
 
         self.hide()
         gtk.main_quit()
@@ -126,10 +128,10 @@ class StudentDialog(gtk.Window):
     def __init__(self, txt):
         super(StudentDialog, self).__init__()
 	global LASTTYPE
-	try:
-		foo = LASTTYPE
-	except NameError:
-		LASTTYPE = "ALUMNO"
+#	try:
+#		foo = LASTTYPE
+#	except NameError:
+#		LASTTYPE = "ALUMNO"
 
         self.set_title(txt)
 #        self.set_size_request(600, 160)
@@ -156,11 +158,15 @@ class StudentDialog(gtk.Window):
 
         self.typelabel = gtk.Label("tipo:")
 	self.studentbutton = gtk.RadioButton(None, "ALUMNO")
-	self.studentbutton.set_active(True)
 #	box2.pack_start(self.studentbutton, True, True, 0)
 #	self.studentbutton.show()
 
 	self.teacherbutton = gtk.RadioButton(self.studentbutton, "PROFESOR")
+	if LASTTYPE == "ALUMNO":
+		self.studentbutton.set_active(True)
+	else:
+		self.teacherbutton.set_active(True)
+
 #	box2.pack_start(self.teacherbutton, True, True, 0)
 #	self.teacherbutton.show()
 
@@ -199,7 +205,9 @@ class StudentDialog(gtk.Window):
         self.show_all()
 
 
-def get_student(txt):
+def get_student(txt, ltype):
+	global LASTTYPE
+	LASTTYPE=ltype
 	StudentDialog(txt)
 	gtk.main()
 	return (STUDENTFULLNAME, STUDENTEMAIL, STUDENTTYPE)

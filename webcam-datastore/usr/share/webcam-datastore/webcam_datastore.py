@@ -166,14 +166,19 @@ def on_mouse(event, x, y, flag, param):
 			db = MySQLdb.connect(host=dbhost, user=dbuser, passwd=dbpass, db=dbname)
 			cur = db.cursor()
 			try:
-				if NOT_IN_ADMITACA:
+				if (NOT_IN_ADMITACA and NOT_IN_ALUMNOS and NOT_IN_PROFES):
 					#cur.execute("INSERT INTO admitaca(foto_guardada, dni, nombre_comp) VALUES ('%s', '%s', '%s');" % ('1', nia, new_apenom))
 					#info_dialog(nia+".jpg - "+nia+" - "+new_apenom+ " - "+datetime.now().strftime('%Y%m%d')+ " - "+new_email)
 
-					cur.execute("INSERT INTO excepciones_fotos(foto, DNI_NORM, nombre_comp, fecha_foto, email) VALUES ('%s', '%s', '%s', '%s', '%s');" % (nia+".jpg", nia, new_apenom, datetime.now().strftime('%Y%m%d'), new_email))
-				else:
+					cur.execute("INSERT INTO excepciones_fotos(foto, DNI_NORM, nombre_comp, fecha_foto, email, tipo) VALUES ('%s', '%s', '%s', '%s', '%s', '%s' );" % (nia+".jpg", nia, new_apenom, datetime.now().strftime('%Y%m%d'), new_email, new_type))
+				elif (NOT_IN_ALUMNOS and NOT_IN_PROFESORES):
 				#	#cur.execute("UPDATE alumnos SET foto='%s' WHERE DNI_NORM='%s';" % (nia+".jpg", nia))
 					cur.execute("UPDATE admitaca SET email='%s' WHERE dni='%s';" % (new_email, nia))
+				elif (NOT_IN_ADMITACA and NOT_IN_PROFESORES):
+					cur.execute("UPDATE alumnos SET foto='%s' WHERE DNI_NORM='%s';" % (nia+".jpg", nia))
+#				else:
+#					cur.execute("UPDATE alumnos SET foto='%s' WHERE DNI_NORM='%s';" % (nia+".jpg", nia))
+
 				db.commit()
 
 			except:
@@ -198,8 +203,6 @@ def clear_tmpfiles():
     filelist = glob.glob(imagefile + "*.jpg")
     for f in filelist:
         os.remove(f)	
-
-def search_admitaca():
 
         
 if __name__ == '__main__':
@@ -245,6 +248,10 @@ if __name__ == '__main__':
 	new_email = ''
 	new_type = ''
 	NOT_IN_ADMITACA = True
+	NOT_IN_ALUMNOS = True
+	NOT_IN_PROFES  = True
+	new_type="ALUMNO"
+
 	def_nia = ''
 
 	(USERNAME, PASSWORD) = get_credentials()
@@ -328,7 +335,7 @@ if __name__ == '__main__':
 		db = MySQLdb.connect(host=dbhost, user=dbuser, passwd=dbpass, db=dbname, charset="utf8")
 		cur = db.cursor()
 		#search in database1 (admitaca)
-		cur.execute("SELECT nombre_comp, NIA FROM admitaca WHERE dni='%s';" % (nia))
+		cur.execute("SELECT nombre_comp, NIA, email FROM admitaca WHERE dni='%s';" % (nia))
 		first_row = cur.fetchone()
 		NOT_IN_ADMITACA = False
 		NOT_IN_ALUMNOS = True
@@ -338,28 +345,31 @@ if __name__ == '__main__':
 			NOT_IN_ADMITACA = True
 			NOT_IN_ALUMNOS = False
 			#search in database2 (alumnos)
-			cur.execute("SELECT nombre_comp, NIA FROM alumnos WHERE DNI_NORM='%s';" % (nia))
+			cur.execute("SELECT nombre_comp, NIA, email FROM alumnos WHERE DNI_NORM='%s';" % (nia))
 			first_row = cur.fetchone()
 
 			if not first_row:
 				NOT_IN_ALUMNOS = True
 				NOT_IN_PROFES = False
 				#search in database3 (profes)
-				cur.execute("SELECT nombre_comp, NIA FROM alumnos WHERE DNI_NORM='%s';" % (nia))
-				first_row = cur.fetchone()
+				cur.execute("SELECT apellido1, apellido2, nombre, email FROM profesores WHERE dni='%s';" % (nia))
+				first_row2 = cur.fetchone()
 
-				if not first_row:
+				if not first_row2:
 					NOT_IN_PROFES = True
+				else:
+					first_row = (first_row2[0] + ' ' + first_row2[1] + ', ' + first_row2[2], ' ', first_row2[3])
 
 		if ( NOT_IN_ADMITACA and NOT_IN_ALUMNOS and NOT_IN_PROFES ):
-			(new_apenom, new_email, new_type) = get_student(nia+' no encontrado')
+			(new_apenom, new_email, new_type) = get_student(nia+' no encontrado', new_type)
 			if not new_apenom:
 				def_nia = nia
 				continue
 			new_apenom = new_apenom.upper()
 			new_apenom = new_apenom.strip()
+
 		else:
-			new_email = get_text(None, first_row[0].decode('utf-8')+'\nDNI: '+nia+'\nNIA: '+first_row[1]+'\n Introduzca email:')
+			new_email = get_text(None, first_row[0].decode('utf-8')+'\nDNI: '+nia+'\nNIA: '+first_row[1]+'\n Introduzca email:', first_row[2])
 
 
 		cur.close()
