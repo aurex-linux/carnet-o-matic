@@ -198,6 +198,9 @@ def clear_tmpfiles():
     filelist = glob.glob(imagefile + "*.jpg")
     for f in filelist:
         os.remove(f)	
+
+def search_admitaca():
+
         
 if __name__ == '__main__':
     
@@ -240,6 +243,7 @@ if __name__ == '__main__':
 	conf_file = '/etc/carnet-o-matic/carnet-o-matic.conf'
 	new_apenom = ''
 	new_email = ''
+	new_type = ''
 	NOT_IN_ADMITACA = True
 	def_nia = ''
 
@@ -320,31 +324,46 @@ if __name__ == '__main__':
 
 			nia = prenia + nia
 				
-		#search in database
-		try:
-			# connect
-			db = MySQLdb.connect(host=dbhost, user=dbuser, passwd=dbpass, db=dbname, charset="utf8")
-			cur = db.cursor()
-			cur.execute("SELECT nombre_comp, NIA FROM admitaca WHERE dni='%s';" % (nia))
-			#cur.execute("SELECT nombre_comp, NIA FROM alumnos WHERE DNI_NORM='%s';" % (nia))
-			first_row =(cur.fetchall())[0]
-			cur.close()
-			db.close()
-			#info_dialog(first_row[0].decode('ISO-8859-1')+'\nDNI: '+nia+'\nNIA: '+first_row[1])
-			#info_dialog(first_row[0]+'\nDNI: '+nia+'\nNIA: '+first_row[1])
-			new_email = get_text(None, first_row[0].decode('utf-8')+'\nDNI: '+nia+'\nNIA: '+first_row[1]+'\n Introduzca email:')
+		# connect
+		db = MySQLdb.connect(host=dbhost, user=dbuser, passwd=dbpass, db=dbname, charset="utf8")
+		cur = db.cursor()
+		#search in database1 (admitaca)
+		cur.execute("SELECT nombre_comp, NIA FROM admitaca WHERE dni='%s';" % (nia))
+		first_row = cur.fetchone()
+		NOT_IN_ADMITACA = False
+		NOT_IN_ALUMNOS = True
+		NOT_IN_PROFES  = True
 
-			NOT_IN_ADMITACA = False
-		except:
-			#new_apenom=get_text(None, nia+' no encontrado\n\nSi desea darlo de alta debe introducir apellidos, nombre del alumno para seguir:')
-			(new_apenom, new_email) = get_student(nia+' no encontrado')
-			
+		if not first_row:
+			NOT_IN_ADMITACA = True
+			NOT_IN_ALUMNOS = False
+			#search in database2 (alumnos)
+			cur.execute("SELECT nombre_comp, NIA FROM alumnos WHERE DNI_NORM='%s';" % (nia))
+			first_row = cur.fetchone()
+
+			if not first_row:
+				NOT_IN_ALUMNOS = True
+				NOT_IN_PROFES = False
+				#search in database3 (profes)
+				cur.execute("SELECT nombre_comp, NIA FROM alumnos WHERE DNI_NORM='%s';" % (nia))
+				first_row = cur.fetchone()
+
+				if not first_row:
+					NOT_IN_PROFES = True
+
+		if ( NOT_IN_ADMITACA and NOT_IN_ALUMNOS and NOT_IN_PROFES ):
+			(new_apenom, new_email, new_type) = get_student(nia+' no encontrado')
 			if not new_apenom:
 				def_nia = nia
 				continue
 			new_apenom = new_apenom.upper()
 			new_apenom = new_apenom.strip()
-			NOT_IN_ADMITACA = True
+		else:
+			new_email = get_text(None, first_row[0].decode('utf-8')+'\nDNI: '+nia+'\nNIA: '+first_row[1]+'\n Introduzca email:')
+
+
+		cur.close()
+		db.close()
 
 	
         	capture = cv.CaptureFromCAM(webcam)
