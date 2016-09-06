@@ -11,7 +11,7 @@ PASSWORD = ''
 
 STUDENTFULLNAME = ''
 STUDENTEMAIL = ''
-
+STUDENTTYPE = 'ALUMNO'
 
 # ================
 
@@ -112,18 +112,28 @@ class StudentDialog(gtk.Window):
         print widget, option
 	global STUDENTFULLNAME
 	global STUDENTEMAIL
+	global STUDENTTYPE
 
         STUDENTFULLNAME = self.fullnameentry.get_text()
         STUDENTEMAIL = self.emailentry.get_text()
+	STUDENTTYPE = ("ALUMNO", "PROFESOR")[self.studentbutton.get_active()]
+	LASTTYPE = STUDENTTYPE
+
         self.hide()
         gtk.main_quit()
 #        return gtk.FALSE
  
     def __init__(self, txt):
         super(StudentDialog, self).__init__()
+	global LASTTYPE
+	try:
+		foo = LASTTYPE
+	except NameError:
+		LASTTYPE = "ALUMNO"
 
         self.set_title(txt)
-        self.set_size_request(600, 160)
+#        self.set_size_request(600, 160)
+        self.set_size_request(600, 200)
         self.set_position(gtk.WIN_POS_CENTER)
         
         win = gtk.Fixed()
@@ -135,9 +145,30 @@ class StudentDialog(gtk.Window):
         self.emaillabel = gtk.Label("email:")
         self.emailentry = gtk.Entry()
         self.emailentry.set_width_chars(40)
-        
+
+#	box1 = gtk.VBox(False, 0)
+#	self.add(box1)
+#	box1.show()
+#	box2 = gtk.VBox(False, 10)
+#	box2.set_border_width(10)
+#	box1.pack_start(box2, True, True, 0)
+#	box2.show()
+
+        self.typelabel = gtk.Label("tipo:")
+	self.studentbutton = gtk.RadioButton(None, "ALUMNO")
+	self.studentbutton.set_active(True)
+#	box2.pack_start(self.studentbutton, True, True, 0)
+#	self.studentbutton.show()
+
+	self.teacherbutton = gtk.RadioButton(self.studentbutton, "PROFESOR")
+#	box2.pack_start(self.teacherbutton, True, True, 0)
+#	self.teacherbutton.show()
+
         self.runbutton = gtk.Button("Guardar")
 	self.runbutton.set_flags(gtk.CAN_DEFAULT)
+
+	self.runbutton.grab_default()
+
         self.exitbutton = gtk.Button("Cancelar")
 
         self.exitbutton.connect("clicked", self.close, "Exit")
@@ -152,8 +183,14 @@ class StudentDialog(gtk.Window):
         win.put(self.emaillabel, 20, 70)
         win.put(self.emailentry, 140, 65)
         
-        win.put(self.runbutton, 340, 110)
-        win.put(self.exitbutton, 140, 110)
+        win.put(self.typelabel, 20, 110)
+        win.put(self.studentbutton, 140, 110)
+        win.put(self.teacherbutton, 250, 110)
+        
+#        win.put(self.runbutton, 340, 110)
+#        win.put(self.exitbutton, 140, 110)
+        win.put(self.runbutton, 340, 150)
+        win.put(self.exitbutton, 140, 150)
 
         self.add(win)
 	self.runbutton.grab_default()
@@ -165,6 +202,6 @@ class StudentDialog(gtk.Window):
 def get_student(txt):
 	StudentDialog(txt)
 	gtk.main()
-	return (STUDENTFULLNAME, STUDENTEMAIL)
+	return (STUDENTFULLNAME, STUDENTEMAIL, STUDENTTYPE)
 
 # ===============
