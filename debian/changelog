@@ -1,3 +1,9 @@
+carnet-o-matic (0.11) trusty; urgency=medium
+
+  * Bypass SSL certificate verification in python >= 2.7.9
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Tue, 07 Feb 2017 16:56:21 +0100
+
 carnet-o-matic (0.10) trusty; urgency=medium
 
   * Added support for current students and teachers

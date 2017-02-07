@@ -19,6 +19,7 @@ from ConfigParser import SafeConfigParser
 import xmlrpclib
 import MySQLdb
 import getopt
+import ssl
 
 from webcam_dialogs import get_credentials, error_dialog, info_dialog, get_student
 
@@ -290,6 +291,9 @@ if __name__ == '__main__':
 		
 	# access datastore
 	try:
+		# avoid python 2.7.9 certificate validation
+		if sys.version_info[0]*100 + sys.version_info[1]*10 + sys.version_info[2] >= 279 :
+			ssl._create_default_https_context = ssl._create_unverified_context
 		server = xmlrpclib.Server(datastore_uri)
 		dbhost = server.get_value(USERNAME, PASSWORD, datastore_space, 'dbhost')
 		dbname = server.get_value(USERNAME, PASSWORD, datastore_space, 'dbname')
