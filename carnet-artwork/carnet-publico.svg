@@ -10,12 +10,12 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="647.05505"
-   height="408.18896"
+   width="649.52808"
+   height="408.43829"
    id="svg4610"
    version="1.1"
    inkscape:version="0.92.1 r15371"
-   viewBox="0 0 606.61412 382.67716"
+   viewBox="0 0 608.93258 382.91091"
    sodipodi:docname="carnet-publico.svg"
    inkscape:export-filename="/datos/usuarios/profesores/svillanuevag/aurex-linux/carnet-o-matic/carnet-artwork/carnet-publico.png"
    inkscape:export-xdpi="275.95999"
@@ -44,8 +44,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="146.64048"
-     inkscape:cy="194.99799"
+     inkscape:cx="148.66075"
+     inkscape:cy="193.98782"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -69,7 +69,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -77,7 +77,7 @@
      inkscape:label="Base"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(633.29178,-344.62501)"
+     transform="translate(633.29175,-343.44421)"
      style="display:inline">
     <rect
        style="opacity:0.10400002;fill:#ff9955;fill-opacity:1;stroke:none;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -588,7 +588,8 @@
      inkscape:groupmode="layer"
      id="layer4"
      inkscape:label="no-print"
-     style="display:none">
+     style="display:none"
+     transform="translate(-3.1953125e-5,1.1807961)">
     <rect
        transform="translate(633.29178,-344.62501)"
        style="display:inline;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.80276656;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -610,7 +611,8 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="modelo1"
-     style="display:none">
+     style="display:none"
+     transform="translate(-3.1953125e-5,1.1807961)">
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;display:inline;fill:#000000;fill-opacity:1;stroke:none"
@@ -687,7 +689,8 @@
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="modelo2"
-     style="display:none">
+     style="display:none"
+     transform="translate(-3.1953125e-5,1.1807961)">
     <rect
        style="display:inline;fill:none;stroke:#000000;stroke-width:2.69981456;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect4830-4"
@@ -730,9 +733,11 @@
      inkscape:groupmode="layer"
      id="layer6"
      inkscape:label="Comun2-3"
-     style="display:inline" />
+     style="display:inline"
+     transform="translate(-3.1953125e-5,1.1807961)" />
   <g
      inkscape:groupmode="layer"
      id="layer5"
-     inkscape:label="modelo3" />
+     inkscape:label="modelo3"
+     transform="translate(-3.1953125e-5,1.1807961)" />
 </svg>
